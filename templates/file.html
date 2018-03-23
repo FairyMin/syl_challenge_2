@@ -1,5 +1,5 @@
-{% for kv in file_info_mod %}
+{% for k in file_info_mod %}
 
-<h2>{{kv}}</h2>
+<h2>{{k}}:{{file_info_mod[k].replace("\\\\n","\n")}}</h2>
 
 {% endfor %}
