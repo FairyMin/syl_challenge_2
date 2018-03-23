@@ -6,10 +6,10 @@ import json
 import os
 
 app=Flask(__name__)
-path = '~/files'
+path = '/home/shiyanlou/files'
 
 @app.route('/')
-def index(title_mod):
+def index():
     '''
     显示文章名称的列表
     页面中需要显示 ｀/home/shiyanlou/files/｀目录下所有的json文件
@@ -32,6 +32,11 @@ def file(filename):
     中的内容
     如果filename不存在，则显示包含字符串｀shiyanlu 404｀ 404页面错误
     '''
+    file_locate = path+'/'+filename+'.json'
+    with open(file_locate,'r') as f:
+        file_info = json.load(f)
+    return render_template('file.html',file_info_mod=file_info)
+
 
 if __name__=="__main__":
     app.run()
