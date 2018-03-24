@@ -14,6 +14,7 @@ db=SQLAlchemy(app)
 #读取文件中的文件名
 #path = '/home/shiyanlou/files'
 #files = os.listdir(path)
+id_list=[]
 
 #首页视图函数
 @app.route('/')
@@ -37,6 +38,8 @@ def index():
 #***********************************************************    
     #获取所有File表中的所有数据，并将每条数据渲染到index2.html模板中
     files = File.query.all()
+    for i in files:
+        id_list.append(str(i.id))
     return render_template('index2.html',titles_m=files)
 
 
@@ -69,8 +72,11 @@ def file(file_id):
 #**************************************************************************
     #根据url传递过来的ID值，获取ID所在数据行的数据
     #并且将该条数据渲染到 file_db.html 模板中
-    a_info = File.query.filter_by(id=file_id).first()
-    return render_template('file_db.html',file_info=a_info)
+    if file_id in id_list:
+        a_info = File.query.filter_by(id=file_id).first()
+        return render_template('file_db.html',file_info=a_info)
+    else:
+        abort(404)
 
 
 #404视图函数
