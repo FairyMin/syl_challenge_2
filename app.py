@@ -20,41 +20,45 @@ files = os.listdir(path)
 def index():
     '''
     显示文章名称的列表
-    页面中需要显示 ｀/home/shiyanlou/files/｀目录下所有的json文件
-    中的｀title｀信息列表
+    挑战1：页面中需要显示 ｀/home/shiyanlou/files/｀目录下所有的json文件
+        中的｀title｀信息列表
+    挑战2：页面中需要显示所有文章的标题(title)列表，
+        此外每个标题都需要使用`<a href=xxx></a>`链接到对应的文章内容页面
     '''
-    titles=[]   #存储每个文件的title
-    #读取每个文件的内容，并存下title
-    for file in files:
-        with open(path+'/'+file,'r') as f:
-            json_info = json.load(f)
-            titles.append(json_info['title'])
-    #返回模板并渲染
-    return render_template('index.html',title_mod=titles)
+#    titles=[]   #存储每个文件的title
+#    #读取每个文件的内容，并存下title
+#    for file in files:
+#        with open(path+'/'+file,'r') as f:
+#            json_info = json.load(f)
+#            titles.append(json_info['title'])
+#    #返回模板并渲染
+#    return render_template('index.html',title_mod=titles)
 
 #files页视图函数
 @app.route('/files/<filename>')
 def file(filename):
     '''
+    挑战一：
     读取并显示 filename.json中的文章内容
     例如 filename='helloshiyanlou'的时候显示helloshiyanlou.json
     中的内容
     如果filename不存在，则显示包含字符串｀shiyanlu 404｀ 404页面错误
+    挑战二：
+    file_id为File表中的文章ID
+    需要显示file_id对应的文章内容，创建时间以及类别信息（需要显示类别名称）
+    如果指定的file_id的文章不存在，则显示404错误页面
     '''
-    filename_j = filename+'.json'
-    file_locate = path+'/'+filename+'.json'
-    #判断文件是否存则，否则报404
-    if filename_j not in files:
-        abort(404)
-    else:
-        #文件存在，读取json
-        with open(file_locate,'r') as f:
-            file_info_dic = json.load(f)
-#        file_info_list = []
-#        for k,v in file_info_dic.items():
-#            file_info_list.append((k,v))   
-    #返回模板并渲染
-    return render_template('file.html',file_info_mod=file_info_dic)
+#    filename_j = filename+'.json'
+#    file_locate = path+'/'+filename+'.json'
+#    #判断文件是否存则，否则报404
+#    if filename_j not in files:
+#        abort(404)
+#    else:
+#        #文件存在，读取json
+#        with open(file_locate,'r') as f:
+#            file_info_dic = json.load(f)
+#    #返回模板并渲染
+#    return render_template('file.html',file_info_mod=file_info_dic)
 
 #404视图函数
 @app.errorhandler(404)
