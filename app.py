@@ -12,8 +12,8 @@ app.config['SQLALCHEMY_DATABASE_URI']='mysql://root@localhost/mydb'
 db=SQLAlchemy(app)
 
 #读取文件中的文件名
-path = '/home/shiyanlou/files'
-files = os.listdir(path)
+#path = '/home/shiyanlou/files'
+#files = os.listdir(path)
 
 #首页视图函数
 @app.route('/')
@@ -25,6 +25,7 @@ def index():
     挑战2：页面中需要显示所有文章的标题(title)列表，
         此外每个标题都需要使用`<a href=xxx></a>`链接到对应的文章内容页面
     '''
+#***********************************************************
 #    titles=[]   #存储每个文件的title
 #    #读取每个文件的内容，并存下title
 #    for file in files:
@@ -33,10 +34,15 @@ def index():
 #            titles.append(json_info['title'])
 #    #返回模板并渲染
 #    return render_template('index.html',title_mod=titles)
+#***********************************************************    
+    #获取所有File表中的所有数据，并将每条数据渲染到index2.html模板中
+    files = File.query.all()
+    return render_template('index2.html',titles_m=files)
+
 
 #files页视图函数
-@app.route('/files/<filename>')
-def file(filename):
+@app.route('/files/<file_id>')
+def file(file_id):
     '''
     挑战一：
     读取并显示 filename.json中的文章内容
@@ -48,6 +54,7 @@ def file(filename):
     需要显示file_id对应的文章内容，创建时间以及类别信息（需要显示类别名称）
     如果指定的file_id的文章不存在，则显示404错误页面
     '''
+#**************************************************************************
 #    filename_j = filename+'.json'
 #    file_locate = path+'/'+filename+'.json'
 #    #判断文件是否存则，否则报404
@@ -59,6 +66,12 @@ def file(filename):
 #            file_info_dic = json.load(f)
 #    #返回模板并渲染
 #    return render_template('file.html',file_info_mod=file_info_dic)
+#**************************************************************************
+    #根据url传递过来的ID值，获取ID所在数据行的数据
+    #并且将该条数据渲染到 file_db.html 模板中
+    a_info = File.query.filter_by(id=file_id).first()
+    return render_template('file_db.html',file_info=a_info)
+
 
 #404视图函数
 @app.errorhandler(404)
