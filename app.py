@@ -3,13 +3,19 @@ from flask import Flask
 from flask import render_template,abort
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+from pymongo import MongoClient
 
 import json
 import os
 
 app=Flask(__name__)
+#创建mysql数据库客户端
 app.config['SQLALCHEMY_DATABASE_URI']='mysql://root@localhost/mydb'
 db=SQLAlchemy(app)
+
+#创建Mongodb数据库客户端
+client = MongoClient('127.0.0.1',27017)
+mongo_db = client.syl
 
 #读取文件中的文件名
 #path = '/home/shiyanlou/files'
@@ -25,6 +31,7 @@ def index():
         中的｀title｀信息列表
     挑战2：页面中需要显示所有文章的标题(title)列表，
         此外每个标题都需要使用`<a href=xxx></a>`链接到对应的文章内容页面
+    挑战3：每篇文章后面先后四该文章的标签列表
     '''
 #***********************************************************
 #    titles=[]   #存储每个文件的title
@@ -38,9 +45,11 @@ def index():
 #***********************************************************    
     #获取所有File表中的所有数据，并将每条数据渲染到index2.html模板中
     files = File.query.all()
+    list_mongo_id={}
     for i in files:
+        list_mongo_id[i.id]=i.tag(i.id)
         id_list.append(str(i.id))
-    return render_template('index2.html',titles_m=files)
+    return render_template('index2.html',titles_m=files,tags_dic=list_momgo_id)
 
 
 #files页视图函数
@@ -89,6 +98,10 @@ def not_found(error):
 
 #数据表 File类－－对应－－文章表
 class File(db.Model):
+    """
+    挑战三：
+        向文章添加标签，删除标签，标签存储在MongoDB数据库
+    """
     #主键
     id = db.Column(db.Integer,primary_key=True)
     #文章标题
@@ -112,6 +125,23 @@ class File(db.Model):
         self.category = category
         self.content = content
 
+    #向文章添加标签
+    def add_tag(self,tag_name):
+        #为当前文章添加tag_name标签存入到MongoDB
+        mongo_db.tag.insert_one({"ID":self.id,"tag":tag_name})
+    
+    #移出标签
+    def remove_tag(self,tag_name):  
+        #从MongoDB中删除当前文章中的tag_name标签
+        mongo_db.tag.delete_one({"ID":self.id,"tag":tag_name})
+    
+    #标签列表
+    @property
+    def tags(self,t_id):
+        #读取mongodb，返回当前文章的标签列表
+        for tag_a in mongo_db.tag.find({"ID":t_id}):
+            tag_list.append(tag_a)
+        return tag_list
 
     def __repr__(self):
         return '<File %s>'%self.title

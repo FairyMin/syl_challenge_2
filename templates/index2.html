@@ -1,5 +1,9 @@
 {% for title in titles_m %}
-<a href=files/{{title.id}}>    
+    <a href=files/{{title.id}}>    
     {{title.title}}
     </a>
+    {% for tag in tags_dic %}
+    <p> {{tag_dic[tag]}}  </p>
+    {% endfor %}
+    <br/>
 {% endfor %}
