@@ -1,10 +1,17 @@
-{% for title in titles_m %}
-    <a href=files/{{title.id}}>    
-    {{title.title}}
-    </a>
-    {% for i in tags_dic[title.id] %}
-    <p> {{i}}  </p>
-    <br/>
-    {% endfor %}
-    <br/>
-{% endfor %}
+{% extends "base.html" %}
+
+{% block content %}
+	{% for title in titles_m %}
+		<h2>
+		<span class ="label label-Primary">
+			<a href=files/{{title.id}}>    
+    		{{title.title}}
+    		</a>
+		</span>
+		</h2>
+    	{% for i in tags_dic[title.id] %}
+    	<span class="label label-info">{{i}}</span>
+    	{% endfor %}
+    	<br/>
+	{% endfor %}
+{% endblock %}

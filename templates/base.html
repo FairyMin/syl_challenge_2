@@ -1,5 +1,25 @@
-<h2> Aiticle Information </h2>
-<hr>
-{% block content%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link href="{{ url_for('static', filename="bootstrap-3.3.7-dist/css/bootstrap.min.css") }}" rel="stylesheet">
+	<script src="{{ url_for('static', filename="bootstrap-3.3.7-dist/js/bootstrap.min.js") }}"></script>
+</head>
+<body>
+	<ul class="nav nav-tabs">
+		<li role="presentation" class="active"><a href="#">Home</a></li>
+		<li role="presentation"><a href="#">Profile</a></li>
+		<li role="presentation"><a href="#">Messages</a></li>
+	</ul>
+	<h1> 
+		<span class="label label-default">
+		Aiticle Information	
+		</span>		 
+	</h1>
+	<hr>
+	{% block content%}
 
-{% endblock %}
+	{% endblock %}
+</body>
+</html>

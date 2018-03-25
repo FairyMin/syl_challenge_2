@@ -1,8 +1,39 @@
 {% extends "base.html" %}
 {% block content %}
-<h2> ID:{{file_info.id}}  </h2>
+
+<div class="page-header">
+	<h1>
+		{{file_info.title}}	
+	</h1>		
+</div>
+
+<h2> 
+	<span class="label label-warning">
+		ID:
+	</span>
+	<span class="label label-info">
+		{{file_info.id}} 	
+	</span>
+
+</h2>
 <hr>
-<h2>Created Time:{{file_info.created_time}}</h2>
+<h2> 
+	<span class="label label-warning">
+		Created Time:
+	</span>
+	<span class="label label-info">
+		{{file_info.created_time}}	
+	</span>
+
+</h2>
 <hr>
-<h2>Content:{{file_info.content}}</h2>
+<h2> 
+	<span class="label label-warning">
+		Content:
+	</span>
+	<span class="label label-info">
+		{{file_info.content}} 	
+	</span>
+
+</h2>
 {% endblock content %}
