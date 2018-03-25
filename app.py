@@ -45,11 +45,13 @@ def index():
 #***********************************************************    
     #获取所有File表中的所有数据，并将每条数据渲染到index2.html模板中
     files = File.query.all()
+    #存储每篇文章的tag  
+    #格式:  {id1:[tag1,tag2...],id2:[tag1,tag2,tag3...]}
     list_mongo_id={}
     for i in files:
-        list_mongo_id[i.id]=i.tag(i.id)
+        list_mongo_id[i.id]=i.tags
         id_list.append(str(i.id))
-    return render_template('index2.html',titles_m=files,tags_dic=list_momgo_id)
+    return render_template('index2.html',titles_m=files,tags_dic=list_mongo_id)
 
 
 #files页视图函数
@@ -116,7 +118,7 @@ class File(db.Model):
     content = db.Column(db.Text)
 
     def __init__(self,title,category,content,created_time=None):
-        self.id=id
+        #self.id=id
 
         self.title = title
         
@@ -139,10 +141,12 @@ class File(db.Model):
     
     #标签列表
     @property
-    def tags(self,t_id):
+    def tags(self):
         #读取mongodb，返回当前文章的标签列表
-        for tag_a in mongo_db.tag.find({"ID":t_id}):
-            tag_list.append(tag_a)
+        tag_list=[]
+        #按照当前ID值，筛选相应的标签，符合条件的存入tag_list中并返回
+        for tag_a in mongo_db.tag.find({"ID":self.id}):
+            tag_list.append(tag_a["tag"])
         return tag_list
 
     def __repr__(self):
@@ -157,7 +161,7 @@ class Category(db.Model):
     name = db.Column(db.String(80))
     
     def __init__(self,name):
-        self.id = id
+        #self.id = id
         self.name = name
 
     def __repr__(self):

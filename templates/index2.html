@@ -2,8 +2,9 @@
     <a href=files/{{title.id}}>    
     {{title.title}}
     </a>
-    {% for tag in tags_dic %}
-    <p> {{tag_dic[tag]}}  </p>
+    {% for i in tags_dic[title.id] %}
+    <p> {{i}}  </p>
+    <br/>
     {% endfor %}
     <br/>
 {% endfor %}
