@@ -116,6 +116,8 @@ class File(db.Model):
     content = db.Column(db.Text)
 
     def __init__(self,title,category,content,created_time=None):
+        self.id=id
+
         self.title = title
         
         if created_time is None:
@@ -155,6 +157,7 @@ class Category(db.Model):
     name = db.Column(db.String(80))
     
     def __init__(self,name):
+        self.id = id
         self.name = name
 
     def __repr__(self):
